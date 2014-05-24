@@ -9,7 +9,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	printf("Welcome to the serial test app!\n\n");
+	cout << "Welcome to the serial test app!\n\n";
 	char* c = "\\\\.\\COM10";
 	// char* d = c;
 	Serial* SP = new Serial(c);    // adjust as needed
