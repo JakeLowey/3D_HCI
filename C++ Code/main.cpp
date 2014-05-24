@@ -1,14 +1,18 @@
 #include <stdio.h>
-#include <tchar.h>
+// #include <tchar.h>
 #include "SerialClass.h"	// Library described above
 #include <string>
+#include <iostream>
 
 // application reads from the specified serial port and reports the collected data
-int _tmain(int argc, _TCHAR* argv[])
+using namespace std;
+
+int main(int argc, char* argv[])
 {
 	printf("Welcome to the serial test app!\n\n");
-
-	Serial* SP = new Serial("\\\\.\\COM10");    // adjust as needed
+	char* c = "\\\\.\\COM10";
+	// char* d = c;
+	Serial* SP = new Serial(c);    // adjust as needed
 
 	if (SP->IsConnected())
 		printf("We're connected");
@@ -21,11 +25,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	while(SP->IsConnected())
 	{
 		readResult = SP->ReadData(incomingData,dataLength);
-		printf("Bytes read: (-1 means no data available) %i\n",readResult);
+		cout << "Bytes read: (-1 means no data available) " + readResult << endl;
 
 		std::string test(incomingData);
 
-		printf("%s",incomingData);
+		cout << test << endl;
 		test = "";
 
 		Sleep(500);
