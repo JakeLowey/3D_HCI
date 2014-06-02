@@ -10,7 +10,7 @@ using namespace std;
 
 //Function Prototypes
 void GetDesktopResolution(int& horizontal, int& vertical);
-void SetUpCursor();
+bool SetUpCursor();
 
 //Global variables
 POINT* loc = new POINT();
