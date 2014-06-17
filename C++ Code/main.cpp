@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "wtypes.h"
 #include "SerialClass.h"	// Library described above
+#include "KeyboardControl.cpp"
 #include <string>
 #include <iostream>
 
@@ -11,25 +12,21 @@ using namespace std;
 //Function Prototypes
 void GetDesktopResolution(int& horizontal, int& vertical);
 bool SetUpCursor();
+void testCase();
 
 //Global variables
 POINT* loc = new POINT();
 
+
+
 //Main function
 int main(int argc, char* argv[])
 {
-	cout << "Welcome to the serial test app!\n\n";
 	// char* c = "\\\\.\\COM10";
 	char* c = "COM3";
 	Serial* SP = new Serial(c);    // adjust as needed
 	SetUpCursor();
-	// for (int i = 0; i < 1600; i+=10)
-	// {
-	// 	SetCursorPos(i,i);
-	// 	Sleep(150);
-	// }
-	if (SP->IsConnected())
-		cout << "We're connected" << endl;
+	testCase();
 
 	char incomingData[256] = "";			// don't forget to pre-allocate memory
 	int dataLength = 256;
@@ -50,6 +47,9 @@ int main(int argc, char* argv[])
 	cout << "done";
 	return 0;
 }
+
+
+
 
 //Gets the screen resolution of the monitor being used
 void GetDesktopResolution(int& horizontal, int& vertical)
@@ -79,7 +79,14 @@ bool SetUpCursor(){
 }
 
 
-bool testCase(){
+void testCase(){
+	cout << "Welcome to the serial test app!\n\n";
 
-	
+	for (int i = 0; i < 1600; i+=10)
+	{
+		SetCursorPos(i,i);
+		Sleep(50);
+	}
+	if (SP->IsConnected())
+		cout << "We're connected" << endl;
 }
