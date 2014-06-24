@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include "wtypes.h"
 #include "SerialClass.h"	// Library described above
-#include "KeyboardControl.cpp"
+#include "Keyboard.h"
 #include <string>
 #include <iostream>
+#include <windows.h>
 
 // application reads from the specified serial port and reports the collected data
 using namespace std;
@@ -26,7 +27,16 @@ int main(int argc, char* argv[])
 	char* c = "COM3";
 	Serial* SP = new Serial(c);    // adjust as needed
 	SetUpCursor();
-	testCase();
+	cout << "Welcome to the serial test app!\n\n";
+
+	for (int i = 0; i < 1600; i+=10)
+	{
+		SetCursorPos(i,i);
+		Sleep(50);
+	}
+	if (SP->IsConnected())
+		cout << "We're connected" << endl;
+	//testCase();
 
 	char incomingData[256] = "";			// don't forget to pre-allocate memory
 	int dataLength = 256;
@@ -72,13 +82,10 @@ bool SetUpCursor(){
 	RECT* rec = new RECT {0,0,h,v};
 	ClipCursor(rec);
 	bool  result = GetCursorPos(loc);
-	// h = loc->x;
-	// v = loc->y;
-	// cout << result << endl << h << endl << v << endl;
 	return result;
 }
 
-
+/*
 void testCase(){
 	cout << "Welcome to the serial test app!\n\n";
 
@@ -90,3 +97,4 @@ void testCase(){
 	if (SP->IsConnected())
 		cout << "We're connected" << endl;
 }
+*/
