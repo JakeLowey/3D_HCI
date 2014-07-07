@@ -29,6 +29,8 @@ public:
 
 std::map<std::string, unsigned int> setKeys();
 
+
+//Constructor
 Keyboard::Keyboard(){
 	ip.type = INPUT_KEYBOARD;
     ip.ki.wScan = 0;
@@ -37,22 +39,27 @@ Keyboard::Keyboard(){
     keys = setKeys();
 }
 
+
+//Destructor
 Keyboard::~Keyboard(){
 	keys.clear();
 }
 
+//Down presses the key that is given
 void Keyboard::pressButton(std::string button){
 	ip.ki.wVk = keys.find(button)->second;
     ip.ki.dwFlags = 0; // 0 for key press
     SendInput(1, &ip, sizeof(INPUT));
 }
 
+//releases key that is given
 void Keyboard::releaseButton(std::string button){
 	ip.ki.wVk = keys.find(button)->second;
     ip.ki.dwFlags = KEYEVENTF_KEYUP;
     SendInput(1, &ip, sizeof(INPUT));
 }
 
+//Presses and then releases a given key
 void Keyboard::tapButton(std::string button){
 	ip.ki.wVk = keys.find(button)->second;
     ip.ki.dwFlags = 0; // 0 for key press

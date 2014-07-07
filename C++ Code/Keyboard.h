@@ -1,4 +1,6 @@
-#define WINVER 0x0500
+#ifndef KEYBOARD_H
+
+// #define WINVER 0x0500
 #include <windows.h>
 #include <string>
 #include <map>
@@ -15,3 +17,5 @@ class Keyboard{
 		INPUT ip;
 		std::map<std::string, unsigned int> keys;
 };
+
+#endif
