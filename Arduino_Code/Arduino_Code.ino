@@ -15,8 +15,9 @@
 #define pinky 10
 
 
-char current_fingers [5];
-char previous_fingers [5];
+bool current_fingers [5];
+bool previous_fingers [5];
+// string fingers [5] = ["thumb","index","middle","ring","pinkey"];
 
 // Set the scale below either 2, 4 or 8
 const byte SCALE = 2;  // Sets full-scale range to +/-2, 4, or 8g. Used to calc real g values.
@@ -43,7 +44,7 @@ void setup()
 	pinMode(middle, INPUT);
 	pinMode(ring, INPUT);
 	pinMode(pinky, INPUT);
-
+/*
 	// Set up the interrupt pins, they're set as active high, push-pull
 	pinMode(int1Pin, INPUT);
 	digitalWrite(int1Pin, LOW);
@@ -63,25 +64,45 @@ void setup()
 	    Serial.println(c, HEX);
 	    while(1) ; // Loop forever if communication doesn't happen
 	}
+  */
 }
 
+
 void loop() {
-	static byte source;
+  current_fingers[0] = onOrOff(analogRead(thumb));
+  current_fingers[1] = onOrOff(analogRead(index));
+  current_fingers[2] = onOrOff(analogRead(middle));
+  current_fingers[3] = onOrOff(analogRead(ring));
+  current_fingers[4] = onOrOff(analogRead(pinky));
+  Serial.println("Fingers");
+  for(int i=0; i<5; i++) {
+      if(previous_fingers[i] != current_fingers[i]){
+          previous_fingers[i] = current_fingers[i];
+          Serial.println(string(i)+string(current_fingers[i]);
+      } 
+  }
+  delay(20);
+}
+
+
+/*
+void loop() {
+	// static byte source;
 
   	// If int1 goes high, all data registers have new data
-  	if (digitalRead(int1Pin)==1)  // Interrupt pin, should probably attach to interrupt function
-  	{
-    	readAccelData(accelCount);  // Read the x/y/z adc values
+  	// if (digitalRead(int1Pin)==1)  // Interrupt pin, should probably attach to interrupt function
+  	// {
+   //  	readAccelData(accelCount);  // Read the x/y/z adc values
 
-		/* 
+		
 		 //Below we'll print out the ADC values for acceleration
-		 for (int i=0; i<3; i++)
-		 {
-		 Serial.print(accelCount[i]);
-		 Serial.print("\t\t");
-		 }
-		 Serial.println();
-		 */
+		 // for (int i=0; i<3; i++)
+		 // {
+		 // Serial.print(accelCount[i]);
+		 // Serial.print("\t\t");
+		 // }
+		 // Serial.println();
+		 
 
 		// Now we'll calculate the accleration value into actual g's
 		for (int i=0; i<3; i++)
@@ -105,6 +126,7 @@ void loop() {
       tapHandler();
   }
   delay(100);  // Delay here for visibility
+
 		current_fingers[0] = analogRead(thumb);
 		current_fingers[1] = analogRead(index);
 		current_fingers[2] = analogRead(middle);
@@ -115,7 +137,15 @@ void loop() {
 		    Serial.println(previous_fingers[i] + ' ' + current_fingers[i]);
 		}
 }
+*/
 
+
+bool onOrOff(int reading) {
+  if(reading > 550){
+      return true;
+  }
+  return false;
+}
 
 void readAccelData(int * destination)
 {

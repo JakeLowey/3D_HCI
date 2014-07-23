@@ -1,9 +1,7 @@
 #ifndef KEYBOARD_H
-
-// #define WINVER 0x0500
-#include <windows.h>
 #include <string>
 #include <map>
+#include <windows.h>
 
 class Keyboard{
 	public:

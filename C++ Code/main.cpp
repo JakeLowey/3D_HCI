@@ -1,6 +1,6 @@
 //Incudes
 #include <stdio.h>
-#include "wtypes.h"
+// #include "wtypes.h"
 #include "SerialClass.h"	// Library described above
 #include "Keyboard.h"
 #include <string>
@@ -41,18 +41,22 @@ int main(int argc, char* argv[])
 	char incomingData[256] = "";			// don't forget to pre-allocate memory
 	int dataLength = 256;
 	int readResult = 0;
+	while(1){
+		while(SP->IsConnected())
+		{
+			readResult = SP->ReadData(incomingData,dataLength);
+			cout << "Bytes read: (-1 means no data available) " + readResult << endl;
+	
+			std::string test(incomingData);
+	
+			cout << test << endl;
+			test = "";
+	
+			Sleep(250);
+		}
+		while(!(SP->IsConnected())) {
 
-	while(SP->IsConnected())
-	{
-		readResult = SP->ReadData(incomingData,dataLength);
-		cout << "Bytes read: (-1 means no data available) " + readResult << endl;
-
-		std::string test(incomingData);
-
-		cout << test << endl;
-		test = "";
-
-		Sleep(250);
+		}
 	}
 	cout << "done";
 	return 0;
