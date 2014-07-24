@@ -8,15 +8,17 @@
 #define MMA8452_ADDRESS 0x1C
 #endif
 
-#define thumb A0
-#define index A1
-#define middle A2
-#define ring A3
-#define pinky 10
-
-
 bool current_fingers [5];
 bool previous_fingers [5];
+
+#define thumb A0
+#define index 3
+#define middle A2
+#define ring 10
+#define pinky 5
+
+
+
 // string fingers [5] = ["thumb","index","middle","ring","pinkey"];
 
 // Set the scale below either 2, 4 or 8
@@ -74,14 +76,16 @@ void loop() {
   current_fingers[2] = onOrOff(analogRead(middle));
   current_fingers[3] = onOrOff(analogRead(ring));
   current_fingers[4] = onOrOff(analogRead(pinky));
-  Serial.println("Fingers");
+//  Serial.println("Fingers");
   for(int i=0; i<5; i++) {
-      if(previous_fingers[i] != current_fingers[i]){
+//      if(previous_fingers[i] != current_fingers[i]){
           previous_fingers[i] = current_fingers[i];
-          Serial.println(string(i)+string(current_fingers[i]);
-      } 
+          Serial.println("thumb");Serial.println(analogRead(thumb));Serial.println("index");Serial.println(analogRead(index));Serial.println("middle");Serial.println(analogRead(middle));Serial.println("ring");Serial.println(analogRead(ring));Serial.println("pinky");Serial.println(analogRead(pinky));
+//          Serial.println((i)+(current_fingers[i]));
+//      } 
+        delay(1250);
   }
-  delay(20);
+  delay(1250);
 }
 
 
