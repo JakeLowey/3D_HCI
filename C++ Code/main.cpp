@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <windows.h>
+#include <math.h>
 
 // application reads from the specified serial port and reports the collected data
 using namespace std;
@@ -25,6 +26,10 @@ int main(int argc, char* argv[])
 {
 	// char* c = "\\\\.\\COM10";
 	char* c = "COM3";
+	int current [5] = {0,0,0,0,0};
+	bool past [5] = {0,0,0,0,0};
+	Keyboard kb = new Keyboard();
+	string actions [32] = {"LeftClick","Control","Alt","Tab","PageUp","PageDown","BrowserForward","BrowserBack","Space","MediaPlayPause","Enter","Home","MediaStop","UpArrow","DownArrow","LeftArrow","RightArrow","NextTrack","PreviousTrack","F5","VolumeUp","VolumeDown","VolumeMute","CapsLock","NumberLock","C","V","P","PrintScreen","Zoom","F4","Sleep"}
 	Serial* SP = new Serial(c);    // adjust as needed
 	SetUpCursor();
 	cout << "Welcome to the serial test app!\n\n";
@@ -45,14 +50,71 @@ int main(int argc, char* argv[])
 		while(SP->IsConnected())
 		{
 			readResult = SP->ReadData(incomingData,dataLength);
-			cout << "Bytes read: (-1 means no data available) " + readResult << endl;
+			// cout << "Bytes read: (-1 means no data available) " + readResult << endl;
 	
-			std::string test(incomingData);
+			if (readResult > 0)
+			{
+				int loc = -1;
+				string bytes(incomingData);
+				switch(bytes[0]) {
+					case "0": loc = 0;
+						break;
+					case "1": loc = 1; 
+						break;
+					case "2": loc = 2; 
+						break;
+					case "3" loc = 3; 
+						break;
+					case "4" loc = 4; 
+						break;
+					default: loc = -1;
+						break;
+				}
+				if (loc != -1)
+				{	
+					bool up = false;
+					switch(bytes[1]){
+						case "0": current[loc] = 0;
+							break;
+						case "1": current[loc] = 1;  up = true;
+							break;
+					}
+					int actionNumber = -1;
+					if (up == true)
+					{	
+						for (int finger = 0; finger < 5; ++finger)
+						{
+							actionNumber += current[i] * pow(2,i);
+						}
+						if (actionNumber > -1)
+						{
+							kb.pressButton(actions[actionNumber]);
+							past = current;
+						}
+						
+					} else {
+						for (int finger = 0; finger < 5; ++finger)
+						{
+							actionNumber += past[i] * pow(2,i);
+						}
+						if (actionNumber > -1)
+						{		
+							kb.releaseButton(actions[actionNumber]);
+							past = current;
+						}
+						else {
+							kb.releaseALL();
+							past = current;
+						}
+					}
+				}				
+			}
+			// std::string test(incomingData);
 	
-			cout << test << endl;
-			test = "";
+			// cout << test << endl;
+			// test = "";
 	
-			Sleep(250);
+			// Sleep(250);
 		}
 		while(!(SP->IsConnected())) {
 

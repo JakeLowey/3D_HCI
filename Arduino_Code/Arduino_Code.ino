@@ -11,11 +11,11 @@
 bool current_fingers [5];
 bool previous_fingers [5];
 
-#define thumb A0
+#define thumb 5
 #define index 3
 #define middle A2
 #define ring 10
-#define pinky 5
+#define pinky A0
 
 
 
